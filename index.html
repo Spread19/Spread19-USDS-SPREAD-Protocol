@@ -1,0 +1,2520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spread - Next Generation Algorithmic Stablecoin Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Added MathJax for mathematical equations in whitepaper -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+          --bg-primary: #ffffff;
+          --bg-secondary: #f8f8f8;
+          --text-primary: #000000;
+          --text-secondary: #333333;
+          --accent-cyan: #00d9ff;
+          --accent-blue: #3b82f6;
+          --accent-dark: #0a0a0a;
+          --border-color: rgba(0, 0, 0, 0.1);
+          --shadow-light: rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: 'Manrope', sans-serif;
+          background-color: var(--bg-primary);
+          color: var(--text-primary);
+          overflow-x: hidden;
+          line-height: 1.6;
+        }
+
+        /* Updated header to black background with white text */
+        .nav {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+          background-color: #000000;
+          border-bottom: 2px solid #333333;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 1.2rem 3rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .nav-logo {
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: color 0.3s;
+        }
+
+        .nav-logo:hover {
+          color: var(--accent-cyan);
+        }
+
+        .nav-menu {
+          display: flex;
+          list-style: none;
+          gap: 2.5rem;
+          align-items: center;
+        }
+
+        .nav-menu a {
+          color: #ffffff;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: color 0.3s, transform 0.2s;
+          position: relative;
+          cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+          color: var(--accent-cyan);
+          transform: translateY(-2px);
+        }
+
+        .nav-toggle {
+          display: none;
+          flex-direction: column;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.5rem;
+        }
+
+        .nav-toggle span {
+          width: 28px;
+          height: 3px;
+          background-color: #ffffff;
+          margin: 4px 0;
+          transition: 0.3s;
+          border-radius: 2px;
+        }
+
+        /* Updated hero section to split layout */
+        .hero {
+          position: relative;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 8rem 2rem 4rem;
+          overflow: hidden;
+          background-color: #000000;
+        }
+
+        .hero-container {
+          max-width: 1400px;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 4rem;
+          position: relative;
+          z-index: 10;
+        }
+
+        .hero-left {
+          flex: 1;
+          max-width: 600px;
+        }
+
+        .hero-right {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+
+        .canvas-container {
+          width: 100%;
+          height: 600px;
+          position: relative;
+        }
+
+        #globeCanvas {
+          width: 100%;
+          height: 100%;
+        }
+
+        .hero-title {
+          font-size: 4rem;
+          font-weight: 800;
+          margin-bottom: 1.5rem;
+          color: #ffffff;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+          font-size: 1.2rem;
+          color: #cccccc;
+          margin-bottom: 2.5rem;
+          font-weight: 400;
+          line-height: 1.6;
+        }
+
+        .hero-buttons {
+          display: flex;
+          gap: 1.5rem;
+          align-items: center;
+        }
+
+        .hero-button {
+          padding: 1rem 2.5rem;
+          font-size: 1rem;
+          font-weight: 700;
+          background-color: var(--accent-blue);
+          color: #ffffff;
+          border: none;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          font-family: 'Manrope', sans-serif;
+        }
+
+        .hero-button:hover {
+          background-color: #2563eb;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .hero-button-secondary {
+          padding: 1rem 2.5rem;
+          font-size: 1rem;
+          font-weight: 700;
+          background-color: transparent;
+          color: #ffffff;
+          border: 2px solid #ffffff;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          font-family: 'Manrope', sans-serif;
+        }
+
+        .hero-button-secondary:hover {
+          background-color: #ffffff;
+          color: #000000;
+          transform: translateY(-2px);
+        }
+
+        /* Added auth tabs styles for login/signup toggle */
+        .auth-tabs {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 2rem;
+          border-bottom: 2px solid #333333;
+        }
+
+        .auth-tab {
+          padding: 0.75rem 1.5rem;
+          font-size: 1rem;
+          font-weight: 600;
+          background: none;
+          border: none;
+          color: #666666;
+          cursor: pointer;
+          transition: all 0.3s;
+          border-bottom: 2px solid transparent;
+          margin-bottom: -2px;
+          font-family: 'Manrope', sans-serif;
+        }
+
+        .auth-tab.active {
+          color: #ffffff;
+          border-bottom-color: var(--accent-cyan);
+        }
+
+        .auth-tab:hover {
+          color: #ffffff;
+        }
+
+        .auth-form {
+          display: none;
+        }
+
+        .auth-form.active {
+          display: block;
+        }
+
+        /* Added starfield background for content sections */
+        .content-section {
+          padding: 6rem 2rem;
+          background-color: #000000;
+          position: relative;
+          display: none;
+          overflow: hidden;
+        }
+
+        .content-section::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: 
+            radial-gradient(2px 2px at 20% 30%, white, transparent),
+            radial-gradient(2px 2px at 60% 70%, white, transparent),
+            radial-gradient(1px 1px at 50% 50%, white, transparent),
+            radial-gradient(1px 1px at 80% 10%, white, transparent),
+            radial-gradient(2px 2px at 90% 60%, white, transparent),
+            radial-gradient(1px 1px at 33% 80%, white, transparent),
+            radial-gradient(1px 1px at 15% 90%, white, transparent);
+          background-size: 200% 200%;
+          background-position: 0% 0%;
+          opacity: 0.4;
+          animation: twinkle 8s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.6; }
+        }
+
+        .content-section.active {
+          display: block;
+        }
+
+        /* Updated section styling for dark theme */
+        .content-section header {
+          background-color: transparent;
+          color: #ffffff;
+          padding: 0;
+          margin-bottom: 3rem;
+        }
+
+        .content-container {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .section-title {
+          font-size: 3.5rem;
+          font-weight: 800;
+          margin-bottom: 2rem;
+          color: #ffffff;
+          text-align: center;
+          letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+          font-size: 1.5rem;
+          color: #cccccc;
+          margin-bottom: 3rem;
+          text-align: center;
+          font-weight: 500;
+        }
+
+        .section-text {
+          font-size: 1.1rem;
+          color: #cccccc;
+          line-height: 1.8;
+          margin-bottom: 2rem;
+        }
+
+        /* Added What is Spread hero section styles */
+        .spread-hero {
+          text-align: center;
+          margin-bottom: 6rem;
+        }
+
+        .spread-hero-title {
+          font-size: 4rem;
+          font-weight: 800;
+          color: #ffffff;
+          margin-bottom: 2rem;
+        }
+
+        .spread-hero-subtitle {
+          font-size: 1.3rem;
+          color: #cccccc;
+          max-width: 900px;
+          margin: 0 auto;
+          line-height: 1.8;
+        }
+
+        /* Added Future of Stablecoins section styles */
+        .future-section {
+          display: flex;
+          gap: 4rem;
+          align-items: center;
+          margin: 6rem 0;
+        }
+
+        .future-content {
+          flex: 1;
+        }
+
+        .future-image {
+          flex: 1;
+        }
+
+        .future-image img {
+          width: 100%;
+          height: auto;
+          border-radius: 1rem;
+          box-shadow: 0 20px 60px rgba(0, 217, 255, 0.3);
+        }
+
+        .future-title {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: #ffffff;
+          margin-bottom: 2rem;
+        }
+
+        .future-text {
+          font-size: 1.1rem;
+          color: #cccccc;
+          line-height: 1.8;
+          margin-bottom: 1.5rem;
+        }
+
+        .future-button {
+          padding: 1rem 2.5rem;
+          font-size: 1rem;
+          font-weight: 700;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: #ffffff;
+          border: none;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          font-family: 'Manrope', sans-serif;
+          margin-top: 2rem;
+        }
+
+        .future-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Added Key Features section styles */
+        .key-features-section {
+          margin-top: 6rem;
+        }
+
+        .key-features-title {
+          font-size: 3rem;
+          font-weight: 800;
+          color: #ffffff;
+          text-align: center;
+          margin-bottom: 4rem;
+        }
+
+        .key-features-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .key-feature-card {
+          background: linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(49, 46, 129, 0.3) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 1rem;
+          padding: 2.5rem;
+          transition: all 0.3s;
+        }
+
+        .key-feature-card:hover {
+          transform: translateY(-5px);
+          border-color: rgba(0, 217, 255, 0.5);
+          box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+
+        .key-feature-icon {
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 0.75rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.8rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .key-feature-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #ffffff;
+          margin-bottom: 1rem;
+        }
+
+        .key-feature-description {
+          font-size: 1rem;
+          color: #cccccc;
+          line-height: 1.7;
+        }
+
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2.5rem;
+          margin-top: 4rem;
+        }
+
+        .feature-card {
+          background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(49, 46, 129, 0.2) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 0.5rem;
+          padding: 2.5rem;
+          transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 30px rgba(0, 217, 255, 0.3);
+          border-color: rgba(0, 217, 255, 0.5);
+        }
+
+        .feature-icon {
+          font-size: 3.5rem;
+          margin-bottom: 1.5rem;
+          display: block;
+        }
+
+        .feature-title {
+          font-size: 1.6rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          color: #ffffff;
+        }
+
+        .feature-description {
+          color: #cccccc;
+          line-height: 1.7;
+          font-size: 1.05rem;
+        }
+
+        .algorithm-diagram {
+          background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(49, 46, 129, 0.2) 100%);
+          border: 1px solid rgba(0, 217, 255, 0.3);
+          border-radius: 0.5rem;
+          padding: 3rem;
+          margin: 3rem 0;
+          font-family: 'Courier New', monospace;
+          font-size: 0.95rem;
+          line-height: 1.8;
+          overflow-x: auto;
+        }
+
+        .algorithm-step {
+          margin-bottom: 1.5rem;
+          padding-left: 2rem;
+          position: relative;
+          color: #cccccc;
+        }
+
+        .algorithm-step::before {
+          content: '→';
+          position: absolute;
+          left: 0;
+          color: var(--accent-cyan);
+          font-weight: bold;
+          font-size: 1.2rem;
+        }
+
+        .info-box {
+          background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(0, 217, 255, 0.05) 100%);
+          border-left: 4px solid var(--accent-cyan);
+          padding: 2rem;
+          margin: 2rem 0;
+          border-radius: 0.3rem;
+        }
+
+        .info-box-title {
+          font-size: 1.3rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          color: #ffffff;
+        }
+
+        .info-box p {
+          color: #cccccc;
+        }
+
+        .footer {
+          background-color: var(--accent-dark);
+          color: #ffffff;
+          padding: 4rem 2rem 2rem;
+          border-top: 3px solid var(--text-primary);
+        }
+
+        .footer-container {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .footer-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 3rem;
+          margin-bottom: 3rem;
+        }
+
+        .footer-title {
+          font-size: 1.3rem;
+          font-weight: 700;
+          margin-bottom: 1.5rem;
+          color: #ffffff;
+        }
+
+        .footer-text {
+          color: #cccccc;
+          line-height: 1.7;
+          font-size: 1rem;
+        }
+
+        .footer-links {
+          list-style: none;
+        }
+
+        .footer-links li {
+          margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+          color: #cccccc;
+          text-decoration: none;
+          transition: color 0.3s;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+
+        .footer-links a:hover {
+          color: var(--accent-cyan);
+        }
+
+        .footer-bottom {
+          text-align: center;
+          padding-top: 2rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.2);
+          color: #999999;
+          font-size: 0.95rem;
+        }
+
+        /* Updated modal to split-screen layout */
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 2000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(5px);
+          animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        .modal-content {
+          display: flex;
+          max-width: 1000px;
+          width: 90%;
+          height: 600px;
+          position: relative;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+          animation: slideUp 0.3s ease;
+          border-radius: 1rem;
+          overflow: hidden;
+        }
+
+        @keyframes slideUp {
+          from {
+            transform: translateY(50px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+
+        .modal-left {
+          flex: 1;
+          background-color: #000000;
+          padding: 3rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .modal-right {
+          flex: 1;
+          background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+          padding: 3rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+        }
+
+        .modal-close {
+          position: absolute;
+          top: 1.5rem;
+          right: 1.5rem;
+          font-size: 2rem;
+          font-weight: 300;
+          color: #ffffff;
+          cursor: pointer;
+          background: none;
+          border: none;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s;
+          line-height: 1;
+          z-index: 10;
+        }
+
+        .modal-close:hover {
+          color: var(--accent-cyan);
+          transform: rotate(90deg);
+        }
+
+        .modal-logo {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 2rem;
+          color: #ffffff;
+        }
+
+        .modal-logo-icon {
+          width: 32px;
+          height: 32px;
+          background-color: var(--accent-blue);
+          border-radius: 0.3rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 800;
+          font-size: 1.2rem;
+        }
+
+        .modal-logo-text {
+          font-size: 1.2rem;
+          font-weight: 700;
+        }
+
+        .modal-title {
+          font-size: 2rem;
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+          color: #ffffff;
+        }
+
+        .modal-subtitle {
+          font-size: 0.95rem;
+          color: #999999;
+          margin-bottom: 2rem;
+        }
+
+        .modal-welcome-title {
+          font-size: 2.5rem;
+          font-weight: 800;
+          margin-bottom: 1rem;
+          text-align: center;
+        }
+
+        .modal-welcome-text {
+          font-size: 1.1rem;
+          text-align: center;
+          opacity: 0.9;
+        }
+
+        .form-group {
+          margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+          display: block;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+          width: 100%;
+          padding: 0.9rem 1rem;
+          font-size: 1rem;
+          border: 2px solid #333333;
+          border-radius: 0.5rem;
+          font-family: 'Manrope', sans-serif;
+          transition: all 0.3s;
+          background-color: #1a1a1a;
+          color: #ffffff;
+        }
+
+        .form-input:focus {
+          outline: none;
+          border-color: var(--accent-cyan);
+          background-color: #2a2a2a;
+          box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+
+        .form-footer {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          margin-bottom: 1.5rem;
+          font-size: 0.9rem;
+        }
+
+        .form-link {
+          color: var(--accent-cyan);
+          text-decoration: none;
+          font-weight: 600;
+          transition: color 0.2s;
+        }
+
+        .form-link:hover {
+          color: #00b8d4;
+          text-decoration: underline;
+        }
+
+        .form-button {
+          width: 100%;
+          padding: 1rem;
+          font-size: 1rem;
+          font-weight: 700;
+          background-color: var(--accent-blue);
+          color: #ffffff;
+          border: none;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          font-family: 'Manrope', sans-serif;
+          margin-bottom: 1rem;
+        }
+
+        .form-button:hover {
+          background-color: #2563eb;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .form-divider {
+          text-align: center;
+          margin: 1.5rem 0;
+          position: relative;
+          color: #666666;
+          font-size: 0.9rem;
+        }
+
+        .form-divider::before,
+        .form-divider::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          width: 40%;
+          height: 1px;
+          background-color: #333333;
+        }
+
+        .form-divider::before {
+          left: 0;
+        }
+
+        .form-divider::after {
+          right: 0;
+        }
+
+        .form-button-secondary {
+          width: 100%;
+          padding: 1rem;
+          font-size: 1rem;
+          font-weight: 600;
+          background-color: #1a1a1a;
+          color: #ffffff;
+          border: 2px solid #333333;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          font-family: 'Manrope', sans-serif;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+        }
+
+        .form-button-secondary:hover {
+          background-color: #2a2a2a;
+          border-color: #ffffff;
+        }
+
+        .form-signup-link {
+          text-align: center;
+          margin-top: 1.5rem;
+          font-size: 0.95rem;
+          color: #999999;
+        }
+
+        /* Added welcome screen styles */
+        .welcome-screen {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+          z-index: 3000;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          animation: fadeIn 0.5s ease;
+        }
+
+        .welcome-screen.active {
+          display: flex;
+        }
+
+        .welcome-content {
+          text-align: center;
+          max-width: 600px;
+          padding: 3rem;
+        }
+
+        .welcome-title {
+          font-size: 3.5rem;
+          font-weight: 800;
+          margin-bottom: 1.5rem;
+        }
+
+        .welcome-subtitle {
+          font-size: 1.3rem;
+          opacity: 0.9;
+          margin-bottom: 3rem;
+        }
+
+        .welcome-button {
+          padding: 1rem 3rem;
+          font-size: 1.1rem;
+          font-weight: 700;
+          background-color: var(--accent-blue);
+          color: #ffffff;
+          border: none;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          font-family: 'Manrope', sans-serif;
+        }
+
+        .welcome-button:hover {
+          background-color: #2563eb;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Added styles for Dev Introduction page */
+        .dev-intro-container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 4rem 2rem;
+          color: #e0e0e0;
+          line-height: 1.8;
+        }
+
+        .dev-intro-title {
+          font-size: 2.5rem;
+          font-weight: 700;
+          margin-bottom: 2rem;
+          color: #ffffff;
+          text-align: center;
+        }
+
+        .dev-intro-section {
+          margin-bottom: 3rem;
+        }
+
+        .dev-intro-section h2 {
+          font-size: 1.8rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+          color: #00ffcc;
+        }
+
+        .dev-intro-section p {
+          font-size: 1.1rem;
+          margin-bottom: 1rem;
+          color: #cccccc;
+        }
+
+        .dev-intro-section ul {
+          list-style: none;
+          padding-left: 0;
+        }
+
+        .dev-intro-section li {
+          padding-left: 1.5rem;
+          margin-bottom: 0.5rem;
+          position: relative;
+        }
+
+        .dev-intro-section li::before {
+          content: '▹';
+          position: absolute;
+          left: 0;
+          color: #00ffcc;
+        }
+
+        /* Added styles for Mindmap page */
+        .mindmap-container {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 2rem;
+          overflow: hidden;
+        }
+
+        .mindmap-title {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: #ffffff;
+          text-align: center;
+          margin-bottom: 3rem;
+        }
+
+        .mindmap-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2rem;
+          transform: scale(0.7);
+          transform-origin: top center;
+        }
+
+        .mindmap-node {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 100%);
+          border: 2px solid rgba(59, 130, 246, 0.5);
+          border-radius: 1rem;
+          padding: 1.5rem 2rem;
+          color: #ffffff;
+          font-weight: 600;
+          text-align: center;
+          min-width: 200px;
+          transition: all 0.3s;
+        }
+
+        .mindmap-node:hover {
+          transform: translateY(-5px);
+          border-color: #00d9ff;
+          box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .mindmap-node.central {
+          font-size: 1.5rem;
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(147, 51, 234, 0.4) 100%);
+          border-width: 3px;
+        }
+
+        .mindmap-row {
+          display: flex;
+          gap: 2rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .mindmap-connector {
+          width: 2px;
+          height: 40px;
+          background: linear-gradient(to bottom, rgba(59, 130, 246, 0.5), rgba(147, 51, 234, 0.5));
+          margin: 0 auto;
+        }
+
+        /* Added styles for Algorithm Explanation whitepaper */
+        .whitepaper-container {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 3rem 2rem;
+          color: #e0e0e0;
+        }
+
+        .whitepaper-title {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: #ffffff;
+          text-align: center;
+          margin-bottom: 1rem;
+        }
+
+        .whitepaper-subtitle {
+          font-size: 1.2rem;
+          color: #00d9ff;
+          text-align: center;
+          margin-bottom: 3rem;
+        }
+
+        .whitepaper-section {
+          margin-bottom: 3rem;
+        }
+
+        .whitepaper-section h2 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: #00d9ff;
+          margin-bottom: 1rem;
+          border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+          padding-bottom: 0.5rem;
+        }
+
+        .whitepaper-section h3 {
+          font-size: 1.4rem;
+          font-weight: 600;
+          color: #ffffff;
+          margin-top: 2rem;
+          margin-bottom: 1rem;
+        }
+
+        .whitepaper-section p {
+          font-size: 1.05rem;
+          line-height: 1.8;
+          margin-bottom: 1rem;
+          color: #cccccc;
+        }
+
+        .whitepaper-section ul, .whitepaper-section ol {
+          margin-left: 2rem;
+          margin-bottom: 1rem;
+        }
+
+        .whitepaper-section li {
+          margin-bottom: 0.5rem;
+          color: #cccccc;
+        }
+
+        .whitepaper-equation {
+          background: rgba(0, 217, 255, 0.05);
+          border-left: 3px solid #00d9ff;
+          padding: 1.5rem;
+          margin: 1.5rem 0;
+          overflow-x: auto;
+        }
+
+        .whitepaper-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 1.5rem 0;
+        }
+
+        .whitepaper-table th,
+        .whitepaper-table td {
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          padding: 0.75rem;
+          text-align: left;
+        }
+
+        .whitepaper-table th {
+          background: rgba(0, 217, 255, 0.1);
+          color: #00d9ff;
+          font-weight: 600;
+        }
+
+        .whitepaper-code {
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 0.5rem;
+          padding: 1rem;
+          font-family: 'Courier New', monospace;
+          font-size: 0.9rem;
+          overflow-x: auto;
+          margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+          .nav-toggle {
+            display: flex;
+          }
+
+          .nav-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #000000;
+            flex-direction: column;
+            padding: 2rem;
+            gap: 1.5rem;
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            border-bottom: 2px solid #333333;
+          }
+
+          .nav-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+          }
+
+          .hero-container {
+            flex-direction: column;
+          }
+
+          .hero-title {
+            font-size: 2.5rem;
+          }
+
+          .hero-subtitle {
+            font-size: 1.1rem;
+          }
+
+          .hero-buttons {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          .hero-button,
+          .hero-button-secondary {
+            width: 100%;
+          }
+
+          /* Updated responsive styles for new sections */
+          .future-section {
+            flex-direction: column;
+          }
+
+          .key-features-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .spread-hero-title {
+            font-size: 2.5rem;
+          }
+
+          .future-title {
+            font-size: 2rem;
+          }
+
+          .key-features-title {
+            font-size: 2rem;
+          }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <!-- Added onclick handler to Spread logo -->
+            <div class="nav-logo" onclick="showSection('home')">Spread</div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <!-- Removed Sign Up button from navigation -->
+            <!-- Added Dev Introduction and Mindmap navigation items -->
+            <ul class="nav-menu" id="navMenu">
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('dev')">Dev Introduction</a></li>
+                <li><a onclick="showSection('spread')">What is Spread</a></li>
+                <li><a onclick="showSection('usds')">What is USDS</a></li>
+                <li><a onclick="showSection('algorithm')">Algorithm Explanation</a></li>
+                <!-- Added Algorithm Simulation menu item -->
+                <li><a onclick="showSection('simulation')">Algorithm Simulation</a></li>
+                <li><a onclick="showSection('mindmap')">Mindmap</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section class="hero" id="home-section">
+        <div class="hero-container">
+            <div class="hero-left">
+                <h1 class="hero-title">Next Generation Platform</h1>
+                <p class="hero-subtitle">Experience the future of algorithmic stablecoins with AI-powered stability mechanisms built on Solana blockchain</p>
+                <div class="hero-buttons">
+                    <!-- Added Get Started button that opens modal -->
+                    <button class="hero-button" onclick="openModal()">Get Started</button>
+                    <button class="hero-button-secondary" onclick="showSection('spread')">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="canvas-container">
+                    <canvas id="globeCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Added Dev Introduction Section -->
+    <section class="content-section" id="dev-section">
+        <div class="dev-intro-container">
+            <h1 class="dev-intro-title">Developer Introduction</h1>
+            
+            <div class="dev-intro-section">
+                <h2>About the Developer</h2>
+                <p>Hello! I'm a blockchain developer passionate about creating innovative solutions in the decentralized finance space. With a background in computer science and years of experience in smart contract development, I've dedicated myself to building the next generation of algorithmic stablecoins.</p>
+            </div>
+
+            <div class="dev-intro-section">
+                <h2>The Vision Behind USDS-SPREAD</h2>
+                <p>The USDS-SPREAD Protocol was born from a simple observation: traditional stablecoins face fundamental limitations. Whether through centralized reserves or over-collateralization, existing solutions compromise on either decentralization or capital efficiency.</p>
+                <p>Our protocol introduces a paradigm shift by leveraging artificial intelligence and advanced algorithms to maintain price stability without these traditional constraints. Built on Solana's high-performance blockchain, USDS-SPREAD represents the convergence of cutting-edge technology and sound economic principles.</p>
+            </div>
+
+            <div class="dev-intro-section">
+                <h2>Technical Expertise</h2>
+                <ul>
+                    <li>Smart Contract Development (Solana/Rust, Ethereum/Solidity)</li>
+                    <li>Machine Learning & AI Integration</li>
+                    <li>Distributed Systems Architecture</li>
+                    <li>Economic Mechanism Design</li>
+                    <li>Security Auditing & Best Practices</li>
+                </ul>
+            </div>
+
+            <div class="dev-intro-section">
+                <h2>Project Goals</h2>
+                <p>The USDS-SPREAD Protocol aims to:</p>
+                <ul>
+                    <li>Provide a truly decentralized stablecoin solution</li>
+                    <li>Achieve superior capital efficiency through algorithmic mechanisms</li>
+                    <li>Leverage AI for proactive stability management</li>
+                    <li>Build a sustainable and scalable DeFi ecosystem</li>
+                    <li>Maintain transparency and community governance</li>
+                </ul>
+            </div>
+
+            <div class="dev-intro-section">
+                <h2>Join the Journey</h2>
+                <p>We're building the future of decentralized finance, and we'd love for you to be part of it. Whether you're a developer, researcher, or enthusiast, there's a place for you in the USDS-SPREAD community.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What is Spread Section -->
+    <section class="content-section" id="spread-section">
+        <div class="content-container">
+            <!-- Added new What is Spread hero section -->
+            <div class="spread-hero">
+                <h1 class="spread-hero-title">What is Spread?</h1>
+                <p class="spread-hero-subtitle">Spread is a revolutionary algorithmic stablecoin protocol that leverages artificial intelligence to maintain price stability. Built on the Solana blockchain, it represents the next evolution in decentralized finance.</p>
+            </div>
+
+            <!-- Added Future of Stablecoins section with image -->
+            <div class="future-section">
+                <div class="future-content">
+                    <h2 class="future-title">The Future of Stablecoins</h2>
+                    <p class="future-text">Traditional stablecoins rely on centralized reserves or over-collateralization, creating systemic risks and inefficiencies. Spread introduces a paradigm shift by using AI-powered algorithms to maintain stability without these limitations.</p>
+                    <p class="future-text">Our protocol continuously analyzes market conditions, trading patterns, and economic indicators to make real-time adjustments to token supply, ensuring optimal price stability while maintaining decentralization.</p>
+                    <button class="future-button" onclick="showSection('usds')">Learn More About Our Technology</button>
+                </div>
+                <div class="future-image">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-O2RgDZJ3yQYIKzImGiWnoe4Nd0Tt7m.png" alt="Network Visualization">
+                </div>
+            </div>
+
+            <!-- Added Key Features section with grid -->
+            <div class="key-features-section">
+                <h2 class="key-features-title">Key Features</h2>
+                <div class="key-features-grid">
+                    <div class="key-feature-card">
+                        <div class="key-feature-icon">🌐</div>
+                        <h3 class="key-feature-title">AI-Driven Technology</h3>
+                        <p class="key-feature-description">Leverages advanced artificial intelligence and machine learning algorithms to maintain price stability automatically.</p>
+                    </div>
+                    <div class="key-feature-card">
+                        <div class="key-feature-icon">⚡</div>
+                        <h3 class="key-feature-title">Built on Solana</h3>
+                        <p class="key-feature-description">Utilizes Solana's high-performance blockchain for fast, low-cost transactions and scalable operations.</p>
+                    </div>
+                    <div class="key-feature-card">
+                        <div class="key-feature-icon">🛡️</div>
+                        <h3 class="key-feature-title">Decentralized Protocol</h3>
+                        <p class="key-feature-description">Fully decentralized system with transparent governance and community-driven decision making.</p>
+                    </div>
+                    <div class="key-feature-card">
+                        <div class="key-feature-icon">🎯</div>
+                        <h3 class="key-feature-title">Algorithmic Stability</h3>
+                        <p class="key-feature-description">Maintains price stability through intelligent supply adjustments based on market conditions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What is USDS Section -->
+    <section class="content-section" id="usds-section">
+        <div class="content-container">
+            <h1 class="section-title">What is USDS?</h1>
+            <p class="section-subtitle">The algorithmic stablecoin powering the Spread ecosystem</p>
+
+            <div class="section-text">
+                <p>USDS is the native stablecoin of the Spread protocol, designed to maintain a stable value of $1.00 USD through algorithmic mechanisms rather than traditional collateral backing.</p>
+            </div>
+
+            <div class="info-box">
+                <h3 class="info-box-title">Key Characteristics</h3>
+                <p><strong>Target Price:</strong> $1.00 USD<br>
+                <strong>Blockchain:</strong> Solana<br>
+                <strong>Supply:</strong> Dynamic (algorithmically adjusted)</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📈</span>
+                    <h3 class="feature-title">Expansion Phase</h3>
+                    <p class="feature-description">When USDS trades above $1.00, the protocol mints new tokens to increase supply</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📉</span>
+                    <h3 class="feature-title">Contraction Phase</h3>
+                    <p class="feature-description">When USDS trades below $1.00, buyback mechanisms reduce supply</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚖️</span>
+                    <h3 class="feature-title">Equilibrium Phase</h3>
+                    <p class="feature-description">Maintains stability through balanced incentives and monitoring</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Replaced Algorithm Explanation Section with Whitepaper -->
+    <section class="content-section" id="algorithm-section">
+        <div class="whitepaper-container">
+            <h1 class="whitepaper-title">USDS–SPREAD Protocol</h1>
+            <p class="whitepaper-subtitle">Technical Whitepaper v1.0</p>
+
+            <div class="whitepaper-section">
+                <h2>Abstract</h2>
+                <p>This whitepaper presents the USDS–SPREAD Protocol, a novel algorithmic stablecoin system built on Solana. USDS is the stablecoin pegged to 1 USD, while SPREAD is the governance and seigniorage-sharing token. The protocol employs an AI-driven agent to dynamically adjust supply, manage reserves, and maintain price stability through market-based mechanisms.</p>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>1. Overview</h2>
+                <h3>1.1 Core Components</h3>
+                <ul>
+                    <li><strong>USDS (Stablecoin):</strong> Target price = $1.00 USD</li>
+                    <li><strong>SPREAD (Governance Token):</strong> Captures protocol value and governs parameters</li>
+                    <li><strong>Market Module:</strong> Handles expansion (minting) and contraction (burning/buyback)</li>
+                    <li><strong>AI Agent:</strong> Monitors price, predicts trends, triggers rebalancing</li>
+                    <li><strong>Reserve & Queue System:</strong> Buffers volatility and manages redemptions</li>
+                </ul>
+
+                <h3>1.2 Key Innovations</h3>
+                <ul>
+                    <li>AI-powered predictive stability mechanisms</li>
+                    <li>Dynamic seigniorage distribution</li>
+                    <li>Multi-layered reserve system</li>
+                    <li>Adaptive contraction strategies</li>
+                </ul>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>2. Core Mechanics</h2>
+                
+                <h3>2.1 Price Discovery</h3>
+                <p>The protocol aggregates price data from multiple decentralized exchanges (DEXs) on Solana:</p>
+                <div class="whitepaper-equation">
+                    $$P_{USDS} = \frac{\sum_{i=1}^{n} w_i \cdot P_i}{\sum_{i=1}^{n} w_i}$$
+                </div>
+                <p>where $$P_i$$ is the price from DEX $$i$$ and $$w_i$$ is the liquidity-weighted factor.</p>
+
+                <h3>2.2 Expansion Phase (P > $1.00)</h3>
+                <p>When USDS trades above peg:</p>
+                <ol>
+                    <li>Protocol mints new USDS tokens</li>
+                    <li>New USDS is sold for SOL/USDC</li>
+                    <li>Proceeds are distributed:
+                        <ul>
+                            <li>Reserve Fund: 40%</li>
+                            <li>SPREAD Stakers: 40%</li>
+                            <li>Treasury: 20%</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>2.3 Contraction Phase (P < $1.00)</h3>
+                <p>When USDS trades below peg:</p>
+                <ol>
+                    <li><strong>Bond Mechanism:</strong> Issue discount bonds redeemable for USDS when price recovers</li>
+                    <li><strong>Reserve Buyback:</strong> Use reserve funds to buy and burn USDS</li>
+                    <li><strong>SPREAD Buyback:</strong> Burn SPREAD to reduce supply and increase value</li>
+                </ol>
+
+                <h3>2.4 AI Agent Architecture</h3>
+                <p>The AI agent operates on a continuous monitoring cycle:</p>
+                <div class="whitepaper-code">
+while True:
+    price = get_oracle_price()
+    deviation = abs(price - 1.0)
+    
+    if deviation > threshold:
+        prediction = ml_model.predict(market_data)
+        action = determine_action(price, prediction)
+        execute_action(action)
+    
+    sleep(interval)
+                </div>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>3. Mathematical Model</h2>
+                
+                <h3>3.1 Supply Adjustment Formula</h3>
+                <div class="whitepaper-equation">
+                    $$\Delta S = k \cdot (P_{current} - P_{target}) \cdot S_{current}$$
+                </div>
+                <p>where:</p>
+                <ul>
+                    <li>$$k$$ = adjustment coefficient (0.01 - 0.05)</li>
+                    <li>$$P_{current}$$ = current USDS price</li>
+                    <li>$$P_{target}$$ = target price ($1.00)</li>
+                    <li>$$S_{current}$$ = current supply</li>
+                </ul>
+
+                <h3>3.2 Reserve Ratio</h3>
+                <div class="whitepaper-equation">
+                    $$R = \frac{Reserve_{value}}{USDS_{supply}}$$
+                </div>
+                <p>Target reserve ratio: 20-30% of total supply</p>
+
+                <h3>3.3 Bond Pricing</h3>
+                <div class="whitepaper-equation">
+                    $$P_{bond} = P_{USDS} \cdot (1 - discount)$$
+                </div>
+                <p>Discount increases with severity of depeg (5-20%)</p>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>4. Reserve & Queue Systems</h2>
+                
+                <h3>4.1 Reserve Fund</h3>
+                <p>Multi-asset reserve composition:</p>
+                <table class="whitepaper-table">
+                    <tr>
+                        <th>Asset</th>
+                        <th>Target Allocation</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td>SOL</td>
+                        <td>40%</td>
+                        <td>Native chain asset, high liquidity</td>
+                    </tr>
+                    <tr>
+                        <td>USDC</td>
+                        <td>40%</td>
+                        <td>Stable value, immediate deployment</td>
+                    </tr>
+                    <tr>
+                        <td>Other</td>
+                        <td>20%</td>
+                        <td>Diversification, yield generation</td>
+                    </tr>
+                </table>
+
+                <h3>4.2 Redemption Queue</h3>
+                <p>During severe contractions, redemptions may be queued:</p>
+                <ul>
+                    <li>FIFO (First In, First Out) processing</li>
+                    <li>Priority for smaller redemptions</li>
+                    <li>Maximum queue time: 7 days</li>
+                    <li>Partial fulfillment allowed</li>
+                </ul>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>5. Tokenomics & Governance</h2>
+                
+                <h3>5.1 SPREAD Token</h3>
+                <ul>
+                    <li><strong>Total Supply:</strong> 100,000,000 SPREAD</li>
+                    <li><strong>Distribution:</strong>
+                        <ul>
+                            <li>Community: 40%</li>
+                            <li>Team & Advisors: 20% (4-year vesting)</li>
+                            <li>Treasury: 25%</li>
+                            <li>Liquidity Mining: 15%</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>5.2 Governance Rights</h3>
+                <p>SPREAD holders can vote on:</p>
+                <ul>
+                    <li>Adjustment coefficient (k) modifications</li>
+                    <li>Reserve ratio targets</li>
+                    <li>Bond discount parameters</li>
+                    <li>AI model updates and thresholds</li>
+                    <li>Treasury fund allocation</li>
+                </ul>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>6. Security & Fail-Safes</h2>
+                
+                <h3>6.1 Circuit Breakers</h3>
+                <ul>
+                    <li>Maximum 10% supply change per 24 hours</li>
+                    <li>Emergency pause mechanism (multi-sig controlled)</li>
+                    <li>Oracle failure detection and fallback</li>
+                </ul>
+
+                <h3>6.2 Audit & Monitoring</h3>
+                <ul>
+                    <li>Regular smart contract audits</li>
+                    <li>Real-time on-chain monitoring</li>
+                    <li>Transparent reserve reporting</li>
+                    <li>Community bug bounty program</li>
+                </ul>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>7. Implementation Notes</h2>
+                
+                <h3>7.1 Technology Stack</h3>
+                <ul>
+                    <li><strong>Blockchain:</strong> Solana (Rust/Anchor framework)</li>
+                    <li><strong>Oracles:</strong> Pyth Network, Switchboard</li>
+                    <li><strong>AI/ML:</strong> Python (TensorFlow/PyTorch)</li>
+                    <li><strong>Frontend:</strong> React, Web3.js</li>
+                </ul>
+
+                <h3>7.2 Deployment Phases</h3>
+                <ol>
+                    <li><strong>Phase 1:</strong> Testnet deployment and community testing</li>
+                    <li><strong>Phase 2:</strong> Mainnet launch with limited supply</li>
+                    <li><strong>Phase 3:</strong> AI agent activation</li>
+                    <li><strong>Phase 4:</strong> Full decentralization and governance transfer</li>
+                </ol>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>8. Conclusion</h2>
+                <p>The USDS–SPREAD Protocol represents a significant advancement in algorithmic stablecoin design. By combining AI-driven decision making with robust economic mechanisms and transparent governance, we aim to create a truly decentralized and stable digital currency for the Solana ecosystem.</p>
+                <p>This whitepaper will be updated as the protocol evolves and new features are implemented. Community feedback and participation are essential to the success of this project.</p>
+            </div>
+
+            <div class="whitepaper-section">
+                <h2>Appendix A: Key Equations</h2>
+                <div class="whitepaper-equation">
+                    $$Supply_{new} = Supply_{current} + \Delta S$$
+                    $$Seigniorage = (P_{market} - P_{mint}) \cdot \Delta S$$
+                    $$Bond_{value} = USDS_{burned} \cdot (1 + premium)$$
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Added Algorithm Simulation Section -->
+    <section class="content-section" id="simulation-section">
+        <div class="content-container" style="max-width: 1400px;">
+            <header style="text-align: center; margin-bottom: 3rem;">
+                <h1 class="section-title">USDS–SPREAD Protocol Interactive Simulator</h1>
+                <p class="section-subtitle">AI‑Augmented Algorithmic Stablecoin — Real-time Scenario Testing</p>
+            </header>
+
+            <div class="simulator-section">
+                <h2 style="color: #7dd3fc; margin-bottom: 20px;">🎮 Interactive Scenario Simulator</h2>
+                
+                <div class="info-box">
+                    <strong>Initial Parameters:</strong><br>
+                    • SPREAD Initial Supply: 1,000,000,000 (1B)<br>
+                    • USDS Initial Supply: 550,000,000 (550M, 55% of SPREAD)<br>
+                    • USDT Reserve: 110,000,000 (110M, 20% of USDS)<br>
+                    • AI Control Range: γ_t ∈ [-0.25, +0.25]
+                </div>
+
+                <h3 style="color: #ffffff; margin-top: 2rem;">Select Scenario:</h3>
+                <div class="scenario-grid">
+                    <button class="scenario-btn" onclick="selectScenario(1)">① Low Volatility<br>(Normal)</button>
+                    <button class="scenario-btn" onclick="selectScenario(2)">② High Buy Pressure<br>(Bull Market)</button>
+                    <button class="scenario-btn" onclick="selectScenario(3)">③ High Sell Pressure<br>(Bear Market)</button>
+                    <button class="scenario-btn" onclick="selectScenario(4)">④ Over-leveraged<br>(Short Attack)</button>
+                    <button class="scenario-btn" onclick="selectScenario(5)">⑤ Bubble Phase<br>(Overheating)</button>
+                </div>
+
+                <div class="control-panel">
+                    <h3 style="color: #ffffff;">Simulation Parameters:</h3>
+                    <div class="control-group">
+                        <label class="control-label">Simulation Duration (blocks):</label>
+                        <input type="range" id="duration" class="control-input" min="100" max="1000" value="500" oninput="updateDurationLabel(this.value)">
+                        <span id="durationLabel" style="color: #7dd3fc;">500 blocks</span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Market Stress Intensity (1-10):</label>
+                        <input type="range" id="intensity" class="control-input" min="1" max="10" value="5" oninput="updateIntensityLabel(this.value)">
+                        <span id="intensityLabel" style="color: #7dd3fc;">5</span>
+                    </div>
+                    <button class="run-btn" onclick="runSimulation()">▶ Run Simulation</button>
+                </div>
+
+                <h3 style="color: #ffffff; margin-top: 2rem;">Current Metrics:</h3>
+                <div class="metrics-grid" id="metricsGrid">
+                    <div class="metric-card">
+                        <div class="metric-label">USDS Price</div>
+                        <div class="metric-value">$<span id="usdsPriceMetric">1.000</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">SPREAD Supply</div>
+                        <div class="metric-value"><span id="spreadSupplyMetric">1.00</span><span class="metric-unit">B</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">USDS Supply</div>
+                        <div class="metric-value"><span id="usdsSupplyMetric">550</span><span class="metric-unit">M</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Volatility (σ)</div>
+                        <div class="metric-value"><span id="volatilityMetric">0.01</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">AI Control (γ_t)</div>
+                        <div class="metric-value"><span id="aiControlMetric">0.00</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Reserve Usage</div>
+                        <div class="metric-value"><span id="reserveMetric">0</span><span class="metric-unit">%</span></div>
+                    </div>
+                </div>
+
+                <h3 style="color: #ffffff; margin-top: 2rem;">Real-time Charts:</h3>
+                <div class="chart-container">
+                    <canvas id="priceChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="supplyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 3rem;">
+                <h3 style="color: #ffffff; margin-bottom: 1rem;">System Overview</h3>
+                <p style="color: #cccccc; margin-bottom: 1rem;">This simulator demonstrates the USDS-SPREAD protocol behavior across 5 critical market scenarios. The AI-augmented control system adjusts parameters in real-time to maintain peg stability while preventing hyperinflation.</p>
+                
+                <h4 style="color: #7dd3fc; margin-top: 1.5rem; margin-bottom: 0.5rem;">Scenario Descriptions:</h4>
+                <ul style="color: #cccccc; line-height: 1.8;">
+                    <li><strong>① Low Volatility:</strong> Normal market conditions with minimal AI intervention (σ ≈ 0.01, γ_t ≈ 0)</li>
+                    <li><strong>② Bull Market:</strong> High USDS demand leading to SPREAD burn (σ ≈ 0.12, γ_t ≈ +0.25)</li>
+                    <li><strong>③ Bear Market:</strong> Heavy sell pressure requiring reserve deployment (σ ≈ 0.18, γ_t ≈ -0.20)</li>
+                    <li><strong>④ Short Attack:</strong> Leveraged shorting with BTC queue activation (σ ≈ 0.25, γ_t ≈ -0.25)</li>
+                    <li><strong>⑤ Bubble Phase:</strong> Overheating market with supply caps (σ ≈ 0.08, γ_t ≈ +0.20)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Added Mindmap Section -->
+    <section class="content-section" id="mindmap-section">
+        <div class="mindmap-container">
+            <h1 class="mindmap-title">Protocol Architecture Mindmap</h1>
+            
+            <div class="mindmap-content">
+                <div class="mindmap-node central">USDS-SPREAD Protocol</div>
+                
+                <div class="mindmap-connector"></div>
+                
+                <div class="mindmap-row">
+                    <div class="mindmap-node">USDS Stablecoin</div>
+                    <div class="mindmap-node">SPREAD Token</div>
+                    <div class="mindmap-node">AI Agent</div>
+                </div>
+                
+                <div class="mindmap-connector"></div>
+                
+                <div class="mindmap-row">
+                    <div class="mindmap-node">Price Oracle</div>
+                    <div class="mindmap-node">Market Module</div>
+                    <div class="mindmap-node">Reserve System</div>
+                </div>
+                
+                <div class="mindmap-connector"></div>
+                
+                <div class="mindmap-row">
+                    <div class="mindmap-node">Expansion Phase</div>
+                    <div class="mindmap-node">Contraction Phase</div>
+                    <div class="mindmap-node">Equilibrium Phase</div>
+                </div>
+                
+                <div class="mindmap-connector"></div>
+                
+                <div class="mindmap-row">
+                    <div class="mindmap-node">Bond Mechanism</div>
+                    <div class="mindmap-node">Buyback System</div>
+                    <div class="mindmap-node">Seigniorage Distribution</div>
+                </div>
+                
+                <div class="mindmap-connector"></div>
+                
+                <div class="mindmap-row">
+                    <div class="mindmap-node">Governance</div>
+                    <div class="mindmap-node">Security</div>
+                    <div class="mindmap-node">Community</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Updated modal to split-screen layout with auth tabs -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-left">
+                <div class="modal-logo">
+                    <div class="modal-logo-icon">S</div>
+                    <div class="modal-logo-text">Spread</div>
+                </div>
+                
+                <!-- Added auth tabs for login/signup toggle -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchAuthTab('login')">로그인</button>
+                    <button class="auth-tab" onclick="switchAuthTab('signup')">회원가입</button>
+                </div>
+
+                <!-- Login form -->
+                <div id="loginForm" class="auth-form active">
+                    <h2 class="modal-title">계정에 로그인</h2>
+                    <p class="modal-subtitle">이메일을 입력하여 계정에 로그인하세요</p>
+                    
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label class="form-label" for="login-email">이메일</label>
+                            <input type="email" id="login-email" class="form-input" placeholder="m@example.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="login-password">비밀번호</label>
+                            <input type="password" id="login-password" class="form-input" placeholder="비밀번호를 입력하세요" required>
+                        </div>
+                        
+                        <div class="form-footer">
+                            <a href="#" class="form-link">비밀번호를 잊으셨나요?</a>
+                        </div>
+                        
+                        <button type="submit" class="form-button">로그인</button>
+                        
+                        <div class="form-divider">또는 다음으로 계속</div>
+                        
+                        <button type="button" class="form-button-secondary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            GitHub로 로그인
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Sign up form -->
+                <div id="signupForm" class="auth-form">
+                    <h2 class="modal-title">계정 만들기</h2>
+                    <p class="modal-subtitle">이메일을 입력하여 계정을 만드세요</p>
+                    
+                    <form onsubmit="handleSignup(event)">
+                        <div class="form-group">
+                            <label class="form-label" for="signup-email">이메일</label>
+                            <input type="email" id="signup-email" class="form-input" placeholder="m@example.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="signup-password">비밀번호</label>
+                            <input type="password" id="signup-password" class="form-input" placeholder="비밀번호를 입력하세요" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="signup-confirm-password">비밀번호 확인</label>
+                            <input type="password" id="signup-confirm-password" class="form-input" placeholder="비밀번호를 다시 입력하세요" required>
+                        </div>
+                        
+                        <button type="submit" class="form-button">회원가입</button>
+                        
+                        <div class="form-divider">또는 다음으로 계속</div>
+                        
+                        <button type="button" class="form-button-secondary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            GitHub로 회원가입
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-right">
+                <h2 class="modal-welcome-title">Welcome to Spread</h2>
+                <p class="modal-welcome-text">Experience the future of algorithmic stablecoins</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Added welcome screen after login -->
+    <div id="welcomeScreen" class="welcome-screen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">Welcome to Spread</h1>
+            <p class="welcome-subtitle">Experience the future of algorithmic stablecoins</p>
+            <button class="welcome-button" onclick="closeWelcome()">Continue to Dashboard</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">Spread</h4>
+                    <p class="footer-text">Building the future of algorithmic stablecoins on Solana blockchain with AI-powered stability mechanisms.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a onclick="showSection('home')">Home</a></li>
+                        <li><a onclick="showSection('dev')">Dev Introduction</a></li>
+                        <li><a onclick="showSection('spread')">What is Spread</a></li>
+                        <li><a onclick="showSection('usds')">What is USDS</a></li>
+                        <li><a onclick="showSection('algorithm')">Algorithm</a></li>
+                        <li><a onclick="showSection('simulation')">Algorithm Simulation</a></li>
+                        <li><a onclick="showSection('mindmap')">Mindmap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Telegram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Spread. All rights reserved. Built on Solana.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        function switchAuthTab(tab) {
+            const loginTab = document.querySelector('.auth-tab:first-child');
+            const signupTab = document.querySelector('.auth-tab:last-child');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            } else {
+                signupTab.classList.add('active');
+                loginTab.classList.remove('active');
+                signupForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
+
+        function openModal() {
+            document.getElementById('signupModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('signupModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            console.log('[v0] Login attempt with email:', email);
+            
+            closeModal();
+            document.getElementById('welcomeScreen').classList.add('active');
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            console.log('[v0] Signup attempt with email:', email);
+            
+            closeModal();
+            document.getElementById('welcomeScreen').classList.add('active');
+        }
+
+        function closeWelcome() {
+            document.getElementById('welcomeScreen').classList.remove('active');
+            showSection('home');
+        }
+
+        document.getElementById('signupModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        function showSection(section) {
+            document.getElementById('home-section').style.display = 'none';
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            
+            if (section === 'home') {
+                document.getElementById('home-section').style.display = 'flex';
+            } else {
+                const sectionId = section + '-section';
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionElement.classList.add('active');
+                }
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('navMenu').classList.remove('active');
+        }
+
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // Globe implementation
+        let scene, camera, renderer, globe, globeGroup, starField;
+        let animationId;
+        let isAnimating = true;
+        let tiles = [];
+        let particles = [];
+
+        const globeTilesData = {
+          "continents": [
+            {"name": "North America", "points": [
+              [49, -123], [45, -75], [40, -100], [35, -95], [30, -110], [25, -80]
+            ]},
+            {"name": "South America", "points": [
+              [-5, -78], [-15, -60], [-23, -43], [-35, -58], [-20, -70]
+            ]},
+            {"name": "Europe", "points": [
+              [60, 10], [55, 37], [50, 10], [45, 15], [40, -5], [52, 0]
+            ]},
+            {"name": "Africa", "points": [
+              [15, 20], [0, 25], [-15, 30], [-25, 25], [-30, 20], [5, 40]
+            ]},
+            {"name": "Asia", "points": [
+              [70, 100], [60, 120], [50, 140], [40, 100], [30, 80], [20, 70], [45, 90]
+            ]},
+            {"name": "Australia", "points": [
+              [-10, 130], [-25, 135], [-35, 140], [-30, 150], [-20, 145]
+            ]}
+          ],
+          "particles": [
+            {"lat": 28, "lon": 77}, {"lat": 19, "lon": 72}, {"lat": 13, "lon": 80},
+            {"lat": 22, "lon": 88}, {"lat": 12, "lon": 75}, {"lat": 26, "lon": 73},
+            {"lat": 23, "lon": 85}, {"lat": 17, "lon": 78}, {"lat": 11, "lon": 76},
+            {"lat": 15, "lon": 74}, {"lat": 25, "lon": 82}, {"lat": 21, "lon": 79},
+            {"lat": 3, "lon": 101}, {"lat": 1, "lon": 103}, {"lat": 14, "lon": 100},
+            {"lat": 13, "lon": 100}, {"lat": 10, "lon": 106}, {"lat": 21, "lon": 105},
+            {"lat": 16, "lon": 108}, {"lat": -6, "lon": 106}, {"lat": -7, "lon": 110},
+            {"lat": -8, "lon": 115}, {"lat": 5, "lon": 115}, {"lat": 4, "lon": 114},
+            {"lat": 14, "lon": 121}, {"lat": 10, "lon": 123}, {"lat": 7, "lon": 125}
+          ],
+          "markers": [
+            {"lat": 40, "lon": -74, "label": "+"}, {"lat": 51, "lon": -0, "label": "+"},
+            {"lat": 35, "lon": 139, "label": "+"}, {"lat": -33, "lon": 151, "label": "+"}
+          ]
+        };
+
+        function initGlobe() {
+          const canvas = document.getElementById('globeCanvas');
+          if (!canvas) return;
+
+          scene = new THREE.Scene();
+          camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+          camera.position.set(0, 0, 5);
+
+          renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+          renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+          createStarField();
+
+          globeGroup = new THREE.Group();
+          scene.add(globeGroup);
+
+          const globeGeometry = new THREE.SphereGeometry(1.5, 64, 64);
+          const globeMaterial = new THREE.MeshBasicMaterial({
+            color: 0x1a1a1a,
+            transparent: true,
+            opacity: 0.9
+          });
+          globe = new THREE.Mesh(globeGeometry, globeMaterial);
+          globeGroup.add(globe);
+
+          const wireframeGeometry = new THREE.SphereGeometry(1.51, 24, 24);
+          const wireframeMaterial = new THREE.LineBasicMaterial({
+            color: 0x444444,
+            transparent: true,
+            opacity: 0.3
+          });
+          const wireframe = new THREE.LineSegments(
+            new THREE.WireframeGeometry(wireframeGeometry),
+            wireframeMaterial
+          );
+          globeGroup.add(wireframe);
+
+          createContinentOutlines();
+          createParticles();
+          createMarkers();
+
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+          scene.add(ambientLight);
+
+          const pointLight = new THREE.PointLight(0x00d9ff, 1.5, 100);
+          pointLight.position.set(5, 5, 5);
+          scene.add(pointLight);
+
+          animate();
+          window.addEventListener('resize', onWindowResize);
+        }
+
+        function createStarField() {
+          const starGeometry = new THREE.BufferGeometry();
+          const starCount = 1000;
+          const positions = new Float32Array(starCount * 3);
+
+          for (let i = 0; i < starCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 100;
+            positions[i + 1] = (Math.random() - 0.5) * 100;
+            positions[i + 2] = (Math.random() - 0.5) * 100;
+          }
+
+          starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+          const starMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 0.05,
+            transparent: true,
+            opacity: 0.6
+          });
+
+          starField = new THREE.Points(starGeometry, starMaterial);
+          scene.add(starField);
+        }
+
+        function latLonToVector3(lat, lon, radius) {
+          const phi = (90 - lat) * (Math.PI / 180);
+          const theta = (lon + 180) * (Math.PI / 180);
+
+          const x = -(radius * Math.sin(phi) * Math.cos(theta));
+          const y = radius * Math.cos(phi);
+          const z = radius * Math.sin(phi) * Math.sin(theta);
+
+          return new THREE.Vector3(x, y, z);
+        }
+
+        function createContinentOutlines() {
+          globeTilesData.continents.forEach(continent => {
+            const points = continent.points.map(([lat, lon]) => 
+              latLonToVector3(lat, lon, 1.52)
+            );
+            points.push(points[0]);
+
+            const curve = new THREE.CatmullRomCurve3(points);
+            const curvePoints = curve.getPoints(100);
+            const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
+            const material = new THREE.LineBasicMaterial({
+              color: 0x00d9ff,
+              transparent: true,
+              opacity: 0.8,
+              linewidth: 2
+            });
+
+            const line = new THREE.Line(geometry, material);
+            line.userData = { type: 'continent', baseOpacity: 0.8 };
+            globeGroup.add(line);
+            tiles.push(line);
+          });
+        }
+
+        function createParticles() {
+          globeTilesData.particles.forEach(particle => {
+            const position = latLonToVector3(particle.lat, particle.lon, 1.53);
+            
+            const geometry = new THREE.SphereGeometry(0.015, 8, 8);
+            const material = new THREE.MeshBasicMaterial({
+              color: 0xffffff,
+              transparent: true,
+              opacity: 0.9
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.copy(position);
+            mesh.userData = {
+              type: 'particle',
+              baseOpacity: 0.9,
+              animationOffset: Math.random() * Math.PI * 2,
+              animationSpeed: 0.5 + Math.random() * 1.0
+            };
+
+            globeGroup.add(mesh);
+            particles.push(mesh);
+          });
+        }
+
+        function createMarkers() {
+          globeTilesData.markers.forEach(marker => {
+            const position = latLonToVector3(marker.lat, marker.lon, 1.54);
+            
+            const group = new THREE.Group();
+            
+            const hLine = new THREE.Mesh(
+              new THREE.BoxGeometry(0.08, 0.015, 0.01),
+              new THREE.MeshBasicMaterial({ color: 0x00d9ff, transparent: true, opacity: 1 })
+            );
+            
+            const vLine = new THREE.Mesh(
+              new THREE.BoxGeometry(0.015, 0.08, 0.01),
+              new THREE.MeshBasicMaterial({ color: 0x00d9ff, transparent: true, opacity: 1 })
+            );
+            
+            group.add(hLine);
+            group.add(vLine);
+            group.position.copy(position);
+            group.lookAt(0, 0, 0);
+            
+            group.userData = {
+              type: 'marker',
+              baseOpacity: 1,
+              animationOffset: Math.random() * Math.PI * 2,
+              animationSpeed: 0.8
+            };
+
+            globeGroup.add(group);
+            tiles.push(group);
+          });
+        }
+
+        function animate() {
+          if (!isAnimating) return;
+          animationId = requestAnimationFrame(animate);
+
+          globeGroup.rotation.y += 0.002;
+          if (starField) starField.rotation.y += 0.0001;
+
+          const time = Date.now() * 0.001;
+          
+          tiles.forEach(tile => {
+            const { baseOpacity, animationOffset, animationSpeed } = tile.userData;
+            const pulse = Math.sin(time * animationSpeed + animationOffset) * 0.2 + 0.8;
+            
+            if (tile.material) {
+              tile.material.opacity = baseOpacity * pulse;
+            } else if (tile.children) {
+              tile.children.forEach(child => {
+                if (child.material) child.material.opacity = baseOpacity * pulse;
+              });
+            }
+          });
+
+          particles.forEach(particle => {
+            const { baseOpacity, animationOffset, animationSpeed } = particle.userData;
+            const pulse = Math.sin(time * animationSpeed + animationOffset) * 0.3 + 0.7;
+            particle.material.opacity = baseOpacity * pulse;
+          });
+
+          renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+          const canvas = document.getElementById('globeCanvas');
+          if (!canvas) return;
+          
+          camera.aspect = canvas.clientWidth / canvas.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initGlobe);
+        } else {
+          initGlobe();
+        }
+
+        // Simulation State
+        let currentScenario = 1;
+        let simulationData = {
+            time: [],
+            usdsPrice: [],
+            spreadSupply: [],
+            usdsSupply: [],
+            volatility: [],
+            aiControl: [],
+            reserve: []
+        };
+
+        // Scenario Configurations
+        const scenarios = {
+            1: { name: 'Low Volatility', sigma: 0.01, gamma: 0.05, usdsRatio: 0.55, color: '#10b981' },
+            2: { name: 'Bull Market', sigma: 0.12, gamma: 0.25, usdsRatio: 0.7, color: '#3b82f6' },
+            3: { name: 'Bear Market', sigma: 0.18, gamma: -0.2, usdsRatio: 0.4, color: '#ef4444' },
+            4: { name: 'Short Attack', sigma: 0.25, gamma: -0.25, usdsRatio: 0.35, color: '#8b5cf6' },
+            5: { name: 'Bubble Phase', sigma: 0.08, gamma: 0.2, usdsRatio: 0.75, color: '#f59e0b' }
+        };
+
+        // Initial Constants
+        const INITIAL_SPREAD = 1e9; // 1 billion
+        const INITIAL_USDS = 5.5e8; // 550 million
+        const INITIAL_RESERVE = 1.1e8; // 110 million USDT
+        const PRP = 100; // Pool Recovery Period
+
+        // Chart instances
+        let priceChart, supplyChart;
+
+        // Initialize Charts
+        function initCharts() {
+            const priceCtx = document.getElementById('priceChart').getContext('2d');
+            const supplyCtx = document.getElementById('supplyChart').getContext('2d');
+
+            priceChart = new Chart(priceCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'USDS Price ($)',
+                        data: [],
+                        borderColor: '#7dd3fc',
+                        backgroundColor: 'rgba(125, 211, 252, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#e6eef6' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#9aa4b2' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                        y: { ticks: { color: '#9aa4b2' }, grid: { color: 'rgba(255,255,255,0.1)' }, min: 0.9, max: 1.1 }
+                    }
+                }
+            });
+
+            supplyChart = new Chart(supplyCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'USDS Supply (M)',
+                            data: [],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'SPREAD Supply (B)',
+                            data: [],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#e6eef6' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#9aa4b2' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                        y: { type: 'linear', position: 'left', ticks: { color: '#9aa4b2' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                        y1: { type: 'linear', position: 'right', ticks: { color: '#9aa4b2' }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // Select Scenario
+        function selectScenario(num) {
+            currentScenario = num;
+            document.querySelectorAll('.scenario-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx + 1 === num);
+            });
+        }
+
+        // Update Labels
+        function updateDurationLabel(val) {
+            document.getElementById('durationLabel').textContent = val + ' blocks';
+        }
+
+        function updateIntensityLabel(val) {
+            document.getElementById('intensityLabel').textContent = val;
+        }
+
+        // Core Simulation Logic
+        function runSimulation() {
+            const duration = parseInt(document.getElementById('duration').value);
+            const intensity = parseInt(document.getElementById('intensity').value) / 10;
+            const scenario = scenarios[currentScenario];
+
+            // Reset data
+            simulationData = {
+                time: [],
+                usdsPrice: [],
+                spreadSupply: [],
+                usdsSupply: [],
+                volatility: [],
+                aiControl: [],
+                reserve: []
+            };
+
+            // Initial conditions
+            let spreadSupply = INITIAL_SPREAD;
+            let usdsSupply = INITIAL_USDS;
+            let reserve = INITIAL_RESERVE;
+            let delta = 0;
+            let pegError = 0;
+
+            // Run simulation
+            for (let t = 0; t < duration; t++) {
+                // Calculate market volatility with stress
+                const sigma = scenario.sigma * (1 + intensity * Math.sin(t / 50));
+
+                // AI Control calculation (simplified PID)
+                const targetRatio = scenario.usdsRatio;
+                const currentRatio = usdsSupply / spreadSupply;
+                const error = targetRatio - currentRatio;
+                let gamma = scenario.gamma * Math.tanh(error * 5);
+                gamma = Math.max(-0.25, Math.min(0.25, gamma));
+
+                // USDS Price dynamics with noise
+                const basePrice = 1 + error * 0.5;
+                const noise = (Math.random() - 0.5) * sigma * 2;
+                const usdsPrice = Math.max(0.9, Math.min(1.1, basePrice + noise));
+
+                // Supply adjustments based on peg error
+                pegError = 1 - usdsPrice;
+
+                if (usdsPrice > 1.01) {
+                    // Expansion: burn SPREAD, mint USDS
+                    const burnAmount = Math.abs(pegError) * spreadSupply * 0.01 * intensity;
+                    spreadSupply -= burnAmount;
+                    usdsSupply += burnAmount * 0.8;
+                } else if (usdsPrice < 0.99) {
+                    // Contraction: burn USDS, mint SPREAD or use reserve
+                    const reserveUsage = Math.min(reserve * 0.1, Math.abs(pegError) * usdsSupply * 0.05 * intensity);
+
+                    if (reserve > INITIAL_RESERVE * 0.1) {
+                        reserve -= reserveUsage;
+                        usdsSupply -= reserveUsage * 0.5;
+                    } else {
+                        const mintAmount = Math.abs(pegError) * usdsSupply * 0.01 * intensity;
+                        spreadSupply += mintAmount;
+                        usdsSupply -= mintAmount * 0.5;
+                    }
+                }
+
+                // Delta replenishment with AI
+                delta = delta * (1 - 1 / PRP) + gamma * intensity * 1e6;
+                usdsSupply += delta * 0.0001;
+
+                // Ensure bounds
+                spreadSupply = Math.max(INITIAL_SPREAD * 0.5, Math.min(INITIAL_SPREAD * 2, spreadSupply));
+                usdsSupply = Math.max(INITIAL_USDS * 0.3, Math.min(INITIAL_USDS * 1.5, usdsSupply));
+
+                // Record data
+                simulationData.time.push(t);
+                simulationData.usdsPrice.push(usdsPrice);
+                simulationData.spreadSupply.push(spreadSupply / 1e9);
+                simulationData.usdsSupply.push(usdsSupply / 1e6);
+                simulationData.volatility.push(sigma);
+                simulationData.aiControl.push(gamma);
+                simulationData.reserve.push((1 - reserve / INITIAL_RESERVE) * 100);
+            }
+
+            updateCharts();
+            updateMetrics();
+        }
+
+        // Update Charts
+        function updateCharts() {
+            priceChart.data.labels = simulationData.time;
+            priceChart.data.datasets[0].data = simulationData.usdsPrice;
+            priceChart.update();
+
+            supplyChart.data.labels = simulationData.time;
+            supplyChart.data.datasets[0].data = simulationData.usdsSupply;
+            supplyChart.data.datasets[1].data = simulationData.spreadSupply;
+            supplyChart.update();
+        }
+
+        // Update Metrics Display
+        function updateMetrics() {
+            const last = simulationData.time.length - 1;
+            document.getElementById('usdsPriceMetric').textContent = simulationData.usdsPrice[last].toFixed(3);
+            document.getElementById('spreadSupplyMetric').textContent = simulationData.spreadSupply[last].toFixed(2);
+            document.getElementById('usdsSupplyMetric').textContent = simulationData.usdsSupply[last].toFixed(0);
+            document.getElementById('volatilityMetric').textContent = simulationData.volatility[last].toFixed(3);
+            document.getElementById('aiControlMetric').textContent = simulationData.aiControl[last].toFixed(3);
+            document.getElementById('reserveMetric').textContent = simulationData.reserve[last].toFixed(1);
+        }
+
+        // Initialize simulation on load
+        window.addEventListener('load', () => {
+            if (document.getElementById('priceChart')) {
+                initCharts();
+                selectScenario(1);
+            }
+        });
+    </script>
+</body>
+</html>
